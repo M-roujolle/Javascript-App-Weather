@@ -8,6 +8,10 @@ const temperature = document.querySelector('.temperature');
 const localisation = document.querySelector('.localisation');
 const heure = document.querySelectorAll('.heure-nom-prevision');
 const tempPourH = document.querySelectorAll('.heure-prevision-valeur');
+const joursDiv = document.querySelectorAll('.jour-prevision-nom');
+const tempJoursDiv = document.querySelectorAll('.jour-prevision-temp');
+const imgIcone = document.querySelector('.logo-meteo');
+const chargementContainer = document.querySelector('.overlay-icone-chargement');
 
 if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(position =>{
@@ -27,8 +31,8 @@ fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&ex
 .then((reponse) =>{
     return reponse.json();
 })
-.then((data) =>{
-  
+.then((data) => {
+
     // console.log(data);
     resultatAPI = data;
 
@@ -56,8 +60,33 @@ fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&ex
 
     for (let i = 0; i < tempPourH.length; i++) {
         tempPourH[i].innerText = `${Math.trunc(resultatAPI.hourly[i * 3].temp)}°`;
-        
+
     }
 
-})
+
+    // trois premieres lettres des jours
+
+    for(let i = 0; i < tabJoursEnOrdre.length; i++){
+    joursDiv[i].innerText = tabJoursEnOrdre[i].slice(0,3);
+    }
+
+
+    // température par jour
+
+    for(let i = 0; i < 7; i++){
+tempJoursDiv[i].innerText = `${Math.trunc(resultatAPI.daily[i + 1].temp.day)}°`
+    }
+
+    // Icone dynamique
+
+    if(heureActuelle >= 6 && heureActuelle < 21){
+        imgIcone.src = `ressources/jour/${resultatAPI.current.weather[0].icon}.svg`
+    }else{
+        imgIcone.src = `ressources/nuit/${resultatAPI.current.weather[0].icon}.svg`
+
+    }
+
+    chargementContainer.classList.add('disparition');
+
+    })
 }

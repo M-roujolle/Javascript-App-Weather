@@ -1,3 +1,6 @@
+import tabJoursEnOrdre from './Utilitaire/gestionTemps.js';
+// console.log(tabJoursEnOrdre);
+
 const CLEAPI = '2147c1731c1f8a219e5627b1aa42116c';
 let resultatAPI;
 const temps = document.querySelector('.temps');
@@ -26,7 +29,7 @@ fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&ex
 })
 .then((data) =>{
   
-    console.log(data);
+    // console.log(data);
     resultatAPI = data;
 
     temps.innerText = resultatAPI.current.weather[0].description;

@@ -26,6 +26,7 @@ fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&ex
 })
 .then((data) =>{
   
+    console.log(data);
     resultatAPI = data;
 
     temps.innerText = resultatAPI.current.weather[0].description;
@@ -38,9 +39,21 @@ fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&ex
     for(let i = 0; i < heure.length; i++){
 
         let heureIncr = heureActuelle + i * 3;
+
+        if (heureIncr > 24) {
+            heure[i].innerText = `${heureIncr - 24} h`;
+        }else if(heureIncr === 24) {
+            heure[i].innerText = "00 h"
+        }else{
         heure[i].innerText = `${heureIncr} h`;
+        }
+    }
 
+    // temperature pour 3h
 
+    for (let i = 0; i < tempPourH.length; i++) {
+        tempPourH[i].innerText = `${Math.trunc(resultatAPI.hourly[i * 3].temp)}°`;
+        
     }
 
 })
